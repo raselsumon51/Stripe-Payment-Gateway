@@ -5,9 +5,7 @@ const app = express()
 const cors = require("cors")
 app.use(express.json())
 app.use(
-  cors({
-    origin: "http://localhost:5500",
-  })
+  cors()
 )
 
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
@@ -39,6 +37,7 @@ app.post("/create-checkout-session", async (req, res) => {
       success_url: `${process.env.CLIENT_URL}/success.html`,
       cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
     })
+    console.log(session);
     res.json({ url: session.url })
   } catch (e) {
     res.status(500).json({ error: e.message })
